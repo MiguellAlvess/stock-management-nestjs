@@ -15,10 +15,16 @@ export class StockOutputsService {
       },
     });
     if (!product) {
-      throw new NotFoundError('Product not found');
+      throw new NotFoundError('Product out of stock');
+    }
+    if (product.quantity === 0) {
+      throw new Error('Insufficient stock quantity');
+    }
+    if (createOutputInputDto.quantity > product.quantity) {
+      throw new Error('Insufficient stock quantity');
     }
     const result = await this.prismaService.$transaction([
-      this.prismaService.stockInput.create({
+      this.prismaService.stockOutput.create({
         data: {
           productId: createOutputInputDto.product_id,
           quantity: createOutputInputDto.quantity,
@@ -31,7 +37,7 @@ export class StockOutputsService {
         },
         data: {
           quantity: {
-            increment: createOutputInputDto.quantity,
+            decrement: createOutputInputDto.quantity,
           },
         },
       }),
@@ -41,7 +47,7 @@ export class StockOutputsService {
 
   async findOne(id: number) {
     try {
-      return await this.prismaService.stockInput.findUniqueOrThrow({
+      return await this.prismaService.stockOutput.findUniqueOrThrow({
         where: { id },
       });
     } catch (error) {
