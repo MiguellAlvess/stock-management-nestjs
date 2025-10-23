@@ -1,7 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { StockInputsService } from './stock-inputs.service';
 import { CreateStockInputDto } from './dto/create-stock-input.dto';
-import { UpdateStockInputDto } from './dto/update-stock-input.dto';
 
 @Controller('stock-inputs')
 export class StockInputsController {
@@ -20,15 +19,5 @@ export class StockInputsController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.stockInputsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateStockInputDto: UpdateStockInputDto) {
-    return this.stockInputsService.update(+id, updateStockInputDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.stockInputsService.remove(+id);
   }
 }

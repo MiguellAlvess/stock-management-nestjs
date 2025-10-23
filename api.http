@@ -21,3 +21,14 @@ Content-Type: application/json
 }
 
 DELETE http://localhost:3000/products/1
+
+
+POST http://localhost:3000/stock-inputs
+
+Content-Type: application/json
+
+{
+    "product_id": 1,
+    "quantity": 10,
+    "date": "2025-10-15"
+}
