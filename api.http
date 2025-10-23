@@ -5,3 +5,6 @@ Content-Type: application/json
     "name": "New Product",
     "price": 29.99
 }
+
+
+GET http://localhost:3000/products
