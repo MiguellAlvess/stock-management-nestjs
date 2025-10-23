@@ -11,11 +11,6 @@ export class StockInputsController {
     return this.stockInputsService.create(createStockInputDto);
   }
 
-  @Get()
-  findAll() {
-    return this.stockInputsService.findAll();
-  }
-
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.stockInputsService.findOne(+id);

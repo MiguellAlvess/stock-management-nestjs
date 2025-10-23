@@ -38,11 +38,16 @@ export class StockInputsService {
     return result[0];
   }
 
-  findAll() {
-    return `This action returns all stockInputs`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} stockInput`;
+  async findOne(id: number) {
+    try {
+      return await this.prismaService.stockInput.findUniqueOrThrow({
+        where: { id },
+      });
+    } catch (error) {
+      console.error(error);
+      if (error.code === 'P2025') {
+        throw new NotFoundError(`Stock Input with ID ${id} not found`);
+      }
+    }
   }
 }
