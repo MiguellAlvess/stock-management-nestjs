@@ -10,3 +10,14 @@ Content-Type: application/json
 GET http://localhost:3000/products
 
 GET http://localhost:3000/products/1
+
+PATCH http://localhost:3000/products/1
+
+Content-Type: application/json
+
+{
+    "name": "Updated Product Name",
+    "price": 39.99
+}
+
+DELETE http://localhost:3000/products/1
