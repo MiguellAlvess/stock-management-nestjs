@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { NotFoundError } from './errors';
 
 @Injectable()
 export class ProductsService {
@@ -19,22 +20,43 @@ export class ProductsService {
     return this.prismaService.product.findMany();
   }
 
-  findOne(id: number) {
-    return this.prismaService.product.findUnique({
-      where: { id },
-    });
+  async findOne(id: number) {
+    try {
+      return await this.prismaService.product.findUniqueOrThrow({
+        where: { id },
+      });
+    } catch (error) {
+      console.error(error);
+      if (error.code === 'P2025') {
+        throw new NotFoundError(`Product with ID ${id} not found`);
+      }
+    }
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return this.prismaService.product.update({
-      where: { id },
-      data: { ...updateProductDto },
-    });
+  async update(id: number, updateProductDto: UpdateProductDto) {
+    try {
+      return await this.prismaService.product.update({
+        where: { id },
+        data: { ...updateProductDto },
+      });
+    } catch (error) {
+      console.error(error);
+      if (error.code === 'P2025') {
+        throw new NotFoundError(`Product with ID ${id} not found`);
+      }
+    }
   }
 
-  remove(id: number) {
-    return this.prismaService.product.delete({
-      where: { id },
-    });
+  async remove(id: number) {
+    try {
+      return await this.prismaService.product.delete({
+        where: { id },
+      });
+    } catch (error) {
+      console.error(error);
+      if (error.code === 'P2025') {
+        throw new NotFoundError(`Product with ID ${id} not found`);
+      }
+    }
   }
 }
